@@ -46,21 +46,21 @@ void loop()
       
       digitalWrite(led2,LOW);    //Se apaga el LED2
       Serial.println("Retirar piezas");
-      distance=calcdist;
+      distance=calcdist();
       
       while(distance<dis){   //Parte del código que emite un pitido hasta que se quita el recipiente
         analogWrite(pit,150);
         delay(500);        
         analogWrite(pit,0);
         delay(500);
-        distance=calcdist;
+        distance=calcdist();
        }
        analogWrite(pit,0);
        count=0;
        while(distance>dis)
        {
         Serial.println("Esperando recipiente");
-        distance=calcdist;
+        distance=calcdist();
         }
     }
     delay (2500);
