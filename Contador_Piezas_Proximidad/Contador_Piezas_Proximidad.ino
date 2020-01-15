@@ -32,7 +32,8 @@ void setup(){
 void loop()
 {
     sum=analogRead(pinAdc);     //Se lee el valor del sensor y se guarda en sum
-    if(sum>range)               //Si sum es mayor que el valor establecido previamente como límite quiere decir que ha caido una pieza
+    if(sum>range)               //Si sum es mayor que el valor establecido previamente como 
+                                //límite quiere decir que ha caido una pieza
     {
       count+=1;                 //El contador de piezas se incrementa en 1
       digitalWrite(led,LOW);    //Se apaga el LED
@@ -40,11 +41,35 @@ void loop()
     if(count==1)Serial.print(" pieza"); else Serial.print(" piezas");
     Serial.println("");
     
-    if (count==5){    //Cuando el contador llega al límite de piezas que queremos salta la alarma que nos avisa que tenemos que retirarlas
+    if (count==5){    //Cuando el contador llega al límite de piezas que queremos salta la alarma 
+                      //que nos avisa que tenemos que retirarlas
       
       digitalWrite(led2,LOW);    //Se apaga el LED2
       Serial.println("Retirar piezas");
-
+      distance=calcdist;
+      
+      while(distance<dis){   //Parte del código que emite un pitido hasta que se quita el recipiente
+        analogWrite(pit,150);
+        delay(500);        
+        analogWrite(pit,0);
+        delay(500);
+        distance=calcdist;
+       }
+       analogWrite(pit,0);
+       count=0;
+       while(distance>dis)
+       {
+        Serial.println("Esperando recipiente");
+        distance=calcdist;
+        }
+    }
+    delay (2500);
+    digitalWrite(led,HIGH);     //El LED se vuelve a encender dando la señal de que puede recibir una nueva pieza
+    digitalWrite(led2,HIGH);
+    }
+}
+int calcdist()
+{
       digitalWrite(trigPin, LOW);
       delayMicroseconds(2);
 
@@ -54,41 +79,6 @@ void loop()
 
       duration=pulseIn(echoPin, HIGH);
       distance=duration*0.034/2;
-      
-      while(distance<dis){   //Parte del código que emite un pitido hasta que se quita el recipiente
-        analogWrite(pit,150);
-        delay(500);        
-        analogWrite(pit,0);
-        delay(500);
-
-        digitalWrite(trigPin, LOW);
-        delayMicroseconds(2);
-
-        digitalWrite(trigPin, HIGH);
-        delayMicroseconds(10);
-        digitalWrite(trigPin, LOW);
-
-        duration=pulseIn(echoPin, HIGH);
-        distance=duration*0.034/2;
-       }
-       analogWrite(pit,0);
-       count=0;
-       while(distance>dis)
-       {
-        Serial.println("Esperando recipiente");
-        digitalWrite(trigPin, LOW);
-        delayMicroseconds(2);
-
-        digitalWrite(trigPin, HIGH);
-        delayMicroseconds(10);
-        digitalWrite(trigPin, LOW);
-
-        duration=pulseIn(echoPin, HIGH);
-        distance=duration*0.034/2;
-        }
-    }
-    delay (2500);
-    digitalWrite(led,HIGH);     //El LED se vuelve a encender dando la señal de que puede recibir una nueva pieza
-    digitalWrite(led2,HIGH);
-    }
+      return (distance);
 }
+      
