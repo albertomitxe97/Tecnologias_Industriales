@@ -5,28 +5,26 @@
 
 Servo servomotor1;
 Servo servomotor2;
-  uint16_t total_r, total_g, total_b, total_c;
-  uint16_t black_limit_values[] = {0, 200, 0, 200, 0, 200};
+uint16_t total_r, total_g, total_b, total_c;
+uint16_t black_limit_values[] = {0, 200, 0, 200, 0, 200};
 uint16_t yellow_limit_values[] = {167, 220, 183, 251, 77, 102};
 uint16_t green_limit_values[] = {55, 70, 115, 175, 47, 67};
 uint16_t orange_limit_values[] = {140, 170, 70, 100, 40, 70};
 uint16_t red_limit_values[] = {90, 140, 50, 100, 70, 125};
 uint16_t purple_limit_values[] = {0, 30, 0, 35, 0, 35};
-  int grado=0;
-  float sum;
-  Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_24MS, TCS34725_GAIN_1X);  // setup RGB sensor
+int grado=0;
+float sum;
+Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_24MS, TCS34725_GAIN_1X);  // setup RGB sensor
   
 void setup() {
-
-  Serial.begin(9600);
-  while (!Serial) {};
-  Serial.println("Red,Green,Blue");
-  servomotor1.attach(4);
-  servomotor2.attach(5);
+Serial.begin(9600);
+while (!Serial) {};
+Serial.println("Red,Green,Blue");
+servomotor1.attach(4);
+servomotor2.attach(5);
 }
 
-void loop() {
-  
+void loop() { 
   servomotor1.write(0);
   delay(1000);
   servomotor1.write(90);
@@ -44,7 +42,6 @@ void loop() {
     delay (2000);
    }
  
-
     if ((total_r >= yellow_limit_values[0]) &&   //check for yellow
            (total_r < yellow_limit_values[1]) &&
            (total_g >= yellow_limit_values[2]) &&
